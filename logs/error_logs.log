@@ -1,0 +1,71 @@
+1.03 beta - 2025-03-17 12:23:46,102 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:24:39,663 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:24:53,823 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:27:33,146 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:28:33,014 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:29:11,363 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:30:07,013 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:30:07,043 - ERROR - Error while storing data: 'payment_type'
+1.03 beta - 2025-03-17 12:30:22,864 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:30:22,883 - ERROR - Error while storing data: (psycopg2.errors.NotNullViolation) null value in column "payment_type" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (5, 4321, trial, 2025-03-17 08:30:22.879428, 2025-03-24 08:30:22.87943, null, null).
+
+[SQL: INSERT INTO users (user_id, status, trial_start, trial_end, expiry_date, payment_type) VALUES (%(user_id)s, %(status)s, %(trial_start)s, %(trial_end)s, %(expiry_date)s, %(payment_type)s) RETURNING users.id]
+[parameters: {'user_id': 4321, 'status': 'trial', 'trial_start': datetime.datetime(2025, 3, 17, 8, 30, 22, 879428), 'trial_end': datetime.datetime(2025, 3, 24, 8, 30, 22, 879430), 'expiry_date': None, 'payment_type': None}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+1.03 beta - 2025-03-17 12:30:49,989 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:30:50,004 - ERROR - Error while storing data: (psycopg2.errors.NotNullViolation) null value in column "payment_type" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (6, 4321, trial, 2025-03-17 08:30:50.0021, 2025-03-24 08:30:50.002102, null, null).
+
+[SQL: INSERT INTO users (user_id, status, trial_start, trial_end, expiry_date, payment_type) VALUES (%(user_id)s, %(status)s, %(trial_start)s, %(trial_end)s, %(expiry_date)s, %(payment_type)s) RETURNING users.id]
+[parameters: {'user_id': 4321, 'status': 'trial', 'trial_start': datetime.datetime(2025, 3, 17, 8, 30, 50, 2100), 'trial_end': datetime.datetime(2025, 3, 24, 8, 30, 50, 2102), 'expiry_date': None, 'payment_type': None}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+1.03 beta - 2025-03-17 12:40:07,199 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:40:07,214 - ERROR - Error while storing data: (psycopg2.errors.NotNullViolation) null value in column "payment_type" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (7, 4321, trial, 2025-03-17 08:40:07.211849, 2025-03-24 08:40:07.211852, null, null).
+
+[SQL: INSERT INTO users (user_id, status, trial_start, trial_end, expiry_date, payment_type) VALUES (%(user_id)s, %(status)s, %(trial_start)s, %(trial_end)s, %(expiry_date)s, %(payment_type)s) RETURNING users.id]
+[parameters: {'user_id': 4321, 'status': 'trial', 'trial_start': datetime.datetime(2025, 3, 17, 8, 40, 7, 211849), 'trial_end': datetime.datetime(2025, 3, 24, 8, 40, 7, 211852), 'expiry_date': None, 'payment_type': None}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+1.03 beta - 2025-03-17 12:46:14,813 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:46:51,173 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:55:52,920 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 12:55:52,931 - ERROR - Error while updating user: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = integer
+LINE 3: WHERE users.user_id = 1234
+                            ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT users.id AS users_id, users.user_id AS users_user_id, users.status AS users_status, users.trial_start AS users_trial_start, users.trial_end AS users_trial_end, users.expiry_date AS users_expiry_date, users.payment_type AS users_payment_type 
+FROM users 
+WHERE users.user_id = %(user_id_1)s]
+[parameters: {'user_id_1': 1234}]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+1.03 beta - 2025-03-17 12:57:04,776 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:01:56,550 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:02:48,136 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:05:14,751 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:06:47,770 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:07:58,865 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:11:02,230 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:11:10,093 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 13:15:08,291 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:16:33,145 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:16:44,130 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 13:20:11,959 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:21:17,374 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:25:04,952 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:25:04,962 - ERROR - Error while saving wallet: 'Wallets' object has no attribute 'save'
+1.03 beta - 2025-03-17 13:25:33,420 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:25:33,433 - ERROR - Error while saving wallet: Class 'sqlalchemy.orm.session.Session' is not mapped
+1.03 beta - 2025-03-17 13:25:42,872 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:26:20,852 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:26:48,654 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:27:21,627 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:30:07,400 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:34:43,442 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:35:04,683 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:35:16,777 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 13:35:16,797 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 13:36:51,093 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 13:37:09,728 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 13:37:09,743 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
