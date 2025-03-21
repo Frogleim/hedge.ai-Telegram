@@ -69,3 +69,65 @@ WHERE users.user_id = %(user_id_1)s]
 1.03 beta - 2025-03-17 13:36:51,093 - ERROR - ❌ Example error log.
 1.03 beta - 2025-03-17 13:37:09,728 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
 1.03 beta - 2025-03-17 13:37:09,743 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:45:17,181 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 15:45:50,425 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:45:50,441 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:46:05,736 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:46:05,755 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:50:38,382 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:50:38,403 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:50:38,449 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 15:50:38,470 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 16:01:04,860 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 16:01:42,518 - ERROR - Error while updating user: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 16:01:42,534 - ERROR - Error while updating user payment type: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 16:56:18,230 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 16:56:25,236 - ERROR - Error while storing data: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 16:56:52,626 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 16:56:55,574 - ERROR - Error while storing data: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-17 16:57:18,484 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-17 16:57:20,829 - ERROR - Error while storing data: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-19 10:55:10,292 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 10:55:26,187 - ERROR - Error while storing data: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-19 10:57:03,621 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 10:57:11,048 - ERROR - Error while storing data: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-19 13:20:57,586 - ERROR - Error while storing data: Multiple rows were found when exactly one was required
+1.03 beta - 2025-03-19 18:06:57,934 - ERROR - Error while storing data: No row was found when one was required
+1.03 beta - 2025-03-19 18:08:39,249 - ERROR - Error while storing data: No row was found when one was required
+1.03 beta - 2025-03-19 20:40:01,036 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:40:01,104 - ERROR - Error while storing data: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 20:41:25,301 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:41:25,492 - ERROR - Error while storing data: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 20:41:42,782 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:41:42,816 - ERROR - Error while storing data: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 20:42:11,802 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:42:11,840 - ERROR - Error while storing data: 'payment_type'
+1.03 beta - 2025-03-19 20:43:16,486 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:44:13,202 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:44:16,841 - ERROR - Error while storing data: (psycopg2.errors.NotNullViolation) null value in column "status" of relation "payments_telegramuser" violates not-null constraint
+DETAIL:  Failing row contains (1, 1234, frogleim, 2025-03-19 16:44:16.528045+00, 2025-03-26 16:44:16.528055+00, null, not payed, null).
+
+[SQL: INSERT INTO payments_telegramuser (telegram_id, telegram_username, trial_start, trial_end, expiry_date, payment_type) VALUES (%(telegram_id)s, %(telegram_username)s, %(trial_start)s, %(trial_end)s, %(expiry_date)s, %(payment_type)s) RETURNING payments_telegramuser.id]
+[parameters: {'telegram_id': 1234, 'telegram_username': 'frogleim', 'trial_start': datetime.datetime(2025, 3, 19, 16, 44, 16, 528045), 'trial_end': datetime.datetime(2025, 3, 26, 16, 44, 16, 528055), 'expiry_date': None, 'payment_type': 'not payed'}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+1.03 beta - 2025-03-19 20:45:16,229 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:57:02,645 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 20:59:13,490 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:00:52,329 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:02:15,219 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:02:29,342 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 21:07:56,329 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:08:39,319 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:10:35,837 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:11:12,658 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 21:13:33,204 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-19 21:14:02,138 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 21:16:33,277 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 21:18:58,553 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-19 22:29:26,082 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'
+1.03 beta - 2025-03-20 15:56:13,462 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-20 15:56:20,644 - ERROR - Error while fetching user: 'NoneType' object has no attribute 'status'
+1.03 beta - 2025-03-20 16:00:25,047 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-20 16:00:32,076 - ERROR - Error while fetching user: 'NoneType' object has no attribute 'expiry_date'
+1.03 beta - 2025-03-21 13:17:12,385 - ERROR - ❌ Example error log.
+1.03 beta - 2025-03-21 13:17:32,364 - ERROR - Error while updating user: type object 'User' has no attribute 'user_id'

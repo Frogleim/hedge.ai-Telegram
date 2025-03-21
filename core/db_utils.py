@@ -1,10 +1,10 @@
-from .models import User, Wallets
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from .models import User, Wallets
 from . import loggs_handler
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
@@ -16,6 +16,7 @@ class DB:
 
     def _connect_db(self):
         try:
+            # Ensure the tables are created in the database
             User.metadata.create_all(self.engine)
             session = self.SessionLocal()
             return session
@@ -27,17 +28,23 @@ class DB:
         session = self._connect_db()
         if session:
             try:
+                # Use .first() to avoid exception if no user is found
+                user = session.query(User).filter(User.telegram_id == str(user_data['telegram_id'])).first()
+                if user:
+                    return False  # User already exists
+
                 if user_data['status'] == "payed":
                     trial_start = None
                     trial_end = None
                     expiry_date = datetime.utcnow() + timedelta(days=30)
                 else:
                     trial_start = datetime.utcnow()
-                    trial_end = datetime.utcnow() + timedelta(days=7)
+                    trial_end = datetime.utcnow() + timedelta(days=1)
                     expiry_date = None
 
                 new_user = User(
-                    user_id=user_data['user_id'],
+                    telegram_id=user_data['telegram_id'],
+                    telegram_username=user_data['telegram_username'],
                     status=user_data['status'],
                     trial_start=trial_start,
                     trial_end=trial_end,
@@ -47,7 +54,8 @@ class DB:
 
                 session.add(new_user)
                 session.commit()
-                loggs_handler.system_log.info(f"New user created. User ID: {user_data['user_id']}")
+                loggs_handler.system_log.info(f"New user created. User ID: {user_data['telegram_id']}")
+                return True
             except Exception as e:
                 loggs_handler.error_logs_logger.error(f'Error while storing data: {e}')
                 session.rollback()
@@ -56,54 +64,87 @@ class DB:
 
     def change_user_status(self, user_id, status):
         session = self._connect_db()
-        try:
-            user = session.query(User).filter(User.user_id == str(user_id)).one()
-            user.status = status
-            session.commit()
-            loggs_handler.system_log.info(f"User status changed to {status} User ID: {user.user_id}")
-        except Exception as e:
-            loggs_handler.error_logs_logger.error(f'Error while updating user: {e}')
+        if session:
+            try:
+                user = session.query(User).filter(User.user_id == str(user_id)).first()
+                if user:
+                    user.status = status
+                    session.commit()
+                    loggs_handler.system_log.info(f"User status changed to {status} User ID: {user.user_id}")
+            except Exception as e:
+                loggs_handler.error_logs_logger.error(f'Error while updating user: {e}')
+            finally:
+                session.close()
 
     def update_payment_method(self, user_id, payment_type):
         session = self._connect_db()
-        try:
-            user = session.query(User).filter(User.user_id == str(user_id)).one()
-            user.payment_type = payment_type
-            session.commit()
-            loggs_handler.system_log.info(f"User payment type changed to {payment_type} User ID: {user.user_id}")
-        except Exception as e:
-            loggs_handler.error_logs_logger.error(f'Error while updating user payment type: {e}')
+        if session:
+            try:
+                user = session.query(User).filter(User.user_id == str(user_id)).first()
+                if user:
+                    user.payment_type = payment_type
+                    session.commit()
+                    loggs_handler.system_log.info(f"User payment type changed to {payment_type} User ID: {user.user_id}")
+            except Exception as e:
+                loggs_handler.error_logs_logger.error(f'Error while updating user payment type: {e}')
+            finally:
+                session.close()
 
     def add_wallet(self, new_wallet):
         session = self._connect_db()
-        try:
-            new_wallet = Wallets(
-                wallet_address=new_wallet['wallet_address'],
-                wallet_network=new_wallet['wallet_network'],
-            )
-            session.add(new_wallet)
-            session.commit()
-        except Exception as e:
-            loggs_handler.error_logs_logger.error(f'Error while saving wallet: {e}')
+        if session:
+            try:
+                wallet = Wallets(
+                    wallet_address=new_wallet['wallet_address'],
+                    wallet_network=new_wallet['wallet_network'],
+                )
+                session.add(wallet)
+                session.commit()
+            except Exception as e:
+                loggs_handler.error_logs_logger.error(f'Error while saving wallet: {e}')
+            finally:
+                session.close()
 
     def get_wallet_address(self, crypto_type):
         """ Fetch the wallet address for a given cryptocurrency type (TRC20, ERC20, Solana, Bitcoin). """
         session = self._connect_db()
-        try:
-            wallet = session.query(Wallets).filter(Wallets.wallet_network == crypto_type).first()
-            return wallet.wallet_address if wallet else None
-        except Exception as e:
-            loggs_handler.error_logs_logger.error(f'Error while fetching wallet address: {e}')
-            return None
-        finally:
-            session.close()
+        if session:
+            try:
+                wallet = session.query(Wallets).filter(Wallets.wallet_network == crypto_type).first()
+                return wallet.wallet_address if wallet else None
+            except Exception as e:
+                loggs_handler.error_logs_logger.error(f'Error while fetching wallet address: {e}')
+                return None
+            finally:
+                session.close()
+
+    def check_user(self, telegram_id):
+        session = self._connect_db()
+        if session:
+            try:
+                user = session.query(User).filter(User.telegram_id == str(telegram_id)).first()
+                expire_date = user.expiry_date
+                trial_end = user.trial_end
+                if expire_date and trial_end and expire_date > datetime.utcnow() and trial_end > datetime.utcnow():
+                    new_status = "expired"
+                    db.change_user_status(telegram_id, new_status)
+                    return False
+
+                if user.status == "payed" or user.status == 'trial':
+                    return True
+                else:
+                    return False
+            except Exception as e:
+                loggs_handler.error_logs_logger.error(f'Error while fetching user: {e}')
+                pass
 
 
 if __name__ == "__main__":
     user_data = {
-        "user_id": 1234,
-        "status": "payed",
-        "payment_type": 'crypto',
+        "telegram_id": 1234,
+        "telegram_username": "frogleim",
+        "status": 'trial',
+        'payment_type': "not payed",
     }
 
     wallet_data = {
@@ -112,11 +153,11 @@ if __name__ == "__main__":
     }
 
     db = DB()
-    # db.add_new_user(user_data)
+    db.add_new_user(user_data)
     # db.change_user_status(user_data['user_id'], 'inactive')
     # db.add_wallet(wallet_data)
 
-    # Test wallet retrieval
-    crypto_type = "Bitcoin"
-    wallet_address = db.get_wallet_address(crypto_type)
-    print(f"Wallet address for {crypto_type}: {wallet_address}")
+    # # Test wallet retrieval
+    # crypto_type = "Bitcoin"
+    # wallet_address = db.get_wallet_address(crypto_type)
+    # print(f"Wallet address for {crypto_type}: {wallet_address}")

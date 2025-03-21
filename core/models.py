@@ -18,7 +18,7 @@ DB_PORT = os.getenv("DB_PORT", "5433")
 DB_NAME = os.getenv("DB_NAME", "hedge.ai")
 
 # Create the database URL
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL='postgresql://virtuum_owner:npg_A2rhO4MTipyW@ep-ancient-dew-a5zf8onm-pooler.us-east-2.aws.neon.tech/virtuum?sslmode=require'
 engine = create_engine(DATABASE_URL)
 
 # Define the Base Model
@@ -35,10 +35,11 @@ class PaymentTypeEnum(Enum):
 
 class User(Base):
     """User table for managing subscriptions"""
-    __tablename__ = "users"
+    __tablename__ = "payments_telegramuser"
     id = Column(Integer, primary_key=True)
-    user_id = Column(String, nullable=False)
-    status = Column(String, default="trial")  # trial, active, expired
+    telegram_id = Column(String, nullable=False)
+    telegram_username = Column(String, default="trial")  # trial, active, expired
+    status = Column(String, nullable=False)
     trial_start = Column(DateTime, nullable=True)
     trial_end = Column(DateTime, nullable=True)  # Defaults to now, modify after trial
     expiry_date = Column(DateTime, nullable=True)  # For paid subscription expiry
@@ -61,3 +62,7 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False
 def get_db_session():
     """Returns a new database session"""
     return SessionLocal()
+
+
+if __name__ == "__main__":
+    print(User.__table__.columns.keys())

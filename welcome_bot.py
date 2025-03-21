@@ -36,7 +36,7 @@ def start_trial_keyboard():
 def payment_method_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="By Card", callback_data="pay_card"),
+            # InlineKeyboardButton(text="By Card", callback_data="pay_card"),
             InlineKeyboardButton(text="By Crypto", callback_data="pay_crypto")
         ]
     ])
@@ -44,37 +44,71 @@ def payment_method_keyboard():
 def crypto_selection_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="TRC20", callback_data="crypto_TRC20"),
-            InlineKeyboardButton(text="ERC20", callback_data="crypto_ERC20")
-        ],
-        [
-            InlineKeyboardButton(text="Solana", callback_data="crypto_Solana"),
-            InlineKeyboardButton(text="Bitcoin", callback_data="crypto_Bitcoin")
+            InlineKeyboardButton(text="Pay Now 💳", url="http://127.0.0.1:8000/payment/process/")
         ]
+
     ])
 
 
-# Command handler for '/start'
+from aiogram import types
+from aiogram.filters import Command
+
+
 @dp.message(Command("start"))
 async def start(message: types.Message):
     db = db_utils.DB()
-
     user_id = message.from_user.id
+    username = message.from_user.username
+
+    print(user_id)
+    print(username)
+
     user_data = {
-        "user_id": user_id,
-        "status": "trial",
-        "payment_type": 'not paid',
+        "telegram_id": user_id,
+        "telegram_username": username,
+        "status": "pending",
+        "payment_type": "not paid",
     }
 
-    db.add_new_user(user_data)
+    is_not_exist = db.add_new_user(user_data)
+    if is_not_exist:
+        welcome_text = """
+        🎉 <b>Welcome to the Hedge.ai!</b> 🚀
 
-    await message.answer(
-        "🎉 Welcome! Choose an option:\n"
-        "You have a 7-day free trial for trade signals, or you can subscribe directly.",
-        reply_markup=start_trial_keyboard()
-    )
+        Welcome to the ultimate <b>Trading Signals</b> bot designed to help you make smarter trading decisions with ease! Whether you're a beginner or an experienced trader, our service provides you with <b>real-time, reliable trade signals</b> to enhance your trading strategies.
 
+        ---
 
+        <b>What We Offer:</b>
+        - ⚡ <b>Accurate Signals:</b> Get trade signals with clear entry and exit points.
+        - 💡 <b>Market Insights:</b> Stay updated on market trends and conditions.
+        - 📈 <b>Performance Tracking:</b> Monitor your trades and their performance over time.
+        - 🚀 <b>Expert Recommendations:</b> Tailored suggestions based on thorough market analysis.
+
+        ---
+
+        <b>Start Your Journey:</b>
+        - 💥 <b>Free 7-Day Trial:</b> Try our service for 7 days at no cost and experience the quality of our signals firsthand!
+        - 💳 <b>Subscribe to Unlock Full Access:</b> If you love the service, upgrade to a paid plan for uninterrupted access to premium signals.
+
+        ---
+
+        <b>Payment Methods:</b>
+        We offer multiple payment options, including <b>credit card</b> and <b>cryptocurrencies</b> like <b>Bitcoin, Ethereum (ERC20), Solana</b>, and <b>TRC20</b>.
+
+        Ready to make your next move in the market? Start your trial or subscribe now and take your trading to the next level! 🚀
+        """
+
+        await message.answer(
+            welcome_text,
+            parse_mode="HTML",  # ✅ Use HTML (No need to escape characters)
+            reply_markup=start_trial_keyboard()
+        )
+    else:
+        await message.answer(
+            "Welcome back! For getting signals, please open this Telegram bot: [t.me/hedge_ai_crypto11_bot](https://t.me/hedge_ai_crypto11_bot)",
+            parse_mode="Markdown",  # ✅ Use Markdown for links
+        )
 # Handle Start Trial Button
 @dp.callback_query(lambda c: c.data == "start_trial")
 async def on_start_trial(callback_query: types.CallbackQuery):
@@ -83,16 +117,23 @@ async def on_start_trial(callback_query: types.CallbackQuery):
 
     db.change_user_status(user_id, 'trial')
 
-    await callback_query.message.edit_text("🎉 You are now on a 7-day free trial for trade signals!")
+    await callback_query.message.edit_text("🎉 You are now on a 7-day free trial for trade signals!\n"
+                                           "t.me/hedge_ai_crypto11_bot.")
 
 
 # Handle Subscription Button -> Ask for Payment Method
 @dp.callback_query(lambda c: c.data == "subscribe")
 async def choose_payment_method(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+
     await callback_query.message.edit_text(
         "💳 Please select a payment method:",
         reply_markup=payment_method_keyboard()
     )
+    db = db_utils.DB()
+
+    db.change_user_status(user_id, 'pending')
+
 
 
 # Handle Payment by Card
@@ -111,51 +152,13 @@ async def pay_by_card(callback_query: types.CallbackQuery):
 @dp.callback_query(lambda c: c.data == "pay_crypto")
 async def select_crypto(callback_query: types.CallbackQuery):
     await callback_query.message.edit_text(
-        "🔹 Choose your preferred cryptocurrency:",
+        "🔹 Click the button below to proceed with the crypto payment:",
         reply_markup=crypto_selection_keyboard()
     )
 
 
-# Handle Selected Cryptocurrency -> Fetch & Display Wallet QR Code
-@dp.callback_query(lambda c: c.data.startswith("crypto_"))
-async def pay_by_selected_crypto(callback_query: types.CallbackQuery):
-    user_id = callback_query.from_user.id
-    db = db_utils.DB()
-
-    # Extract cryptocurrency type from callback data
-    selected_crypto = callback_query.data.split("_")[1]  # e.g., "crypto_TRC20" → "TRC20"
-
-    # Fetch the correct wallet address from the database
-    wallet_address = db.get_wallet_address(selected_crypto)  # Implement this function in db_utils
-
-    if not wallet_address:
-        await callback_query.message.edit_text(f"❌ No wallet address found for {selected_crypto}.")
-        return
-
-    # Generate QR code
-    qr_code_path = f"wallet_qr_{selected_crypto}.png"
-    generate_qr_code(wallet_address, qr_code_path)
-
-    # Update database with user payment choice
-    db.change_user_status(user_id, 'active')
-    db.update_payment_method(user_id, selected_crypto)
-
-    # Send QR Code & Wallet Address
-    qr_code = FSInputFile(qr_code_path)
-    await callback_query.message.answer_photo(
-        qr_code, caption=f"📌 Scan this QR code to pay with **{selected_crypto}**.\n\n"
-                         f"💰 Wallet Address: `{wallet_address}`\n\n"
-                         f"Subscription price: 15 USDT/month"
-    )
 
 
-# Generate QR Code for a given address
-def generate_qr_code(wallet_address, file_path):
-    qr = qrcode.make(wallet_address)
-    qr.save(file_path)
-
-
-# Main entry point for the bot
 async def on_start():
     try:
         await dp.start_polling(bot)

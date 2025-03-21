@@ -7,15 +7,14 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from dotenv import load_dotenv
+from core import db_utils
 import os
 
 load_dotenv()
 
-# Telegram Bot Token (Replace with your bot token)
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_MONITORING")
 CHAT_ID = os.getenv("CHAT_ID")
 
-# RabbitMQ Connection Settings
 RABBITMQ_HOST = os.getenv("RABBITMQ_HOST")
 RABBITMQ_PORT = os.getenv("RABBITMQ_PORT")
 RABBITMQ_USER = os.getenv("RABBITMQ_USER")
@@ -26,22 +25,24 @@ QUEUE_NAME = os.getenv("QUEUE_NAME")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 bot = Bot(token=TELEGRAM_BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
 dp = Dispatcher()
 
 
-@dp.message(Command("start"))
-async def start(message: types.Message):
-    user_id = message.from_user.id
-    await add_user(user_id)
-    await message.answer("🎉 Welcome! You have a 7-day free trial for trade signals!")
 
-@dp.message(Command("subscribe"))
-async def subscribe(message: types.Message):
+
+@dp.message(Command('start'))
+async def start_command(message: types.Message):
+    """Handle the /start command."""
+
+    db = db_utils.DB()
     user_id = message.from_user.id
-    # Here you can integrate a payment system (e.g., Stripe, Crypto Payments)
-    await message.answer("💳 Subscribe via our website: [Subscription Link]")
+    is_allowed = db.check_user(user_id)
+    if not is_allowed:
+        await message.answer('You are not allowed to get trading signal. Please subscribe or get 7 days trial.\n @miya_binance_bot')
+    else:
+        await message.answer("👋 Welcome! This bot will send you trade signals. Stay tuned!")
+
 
 async def send_telegram_message(trade_signal):
     """Send trade signal to Telegram chat."""
@@ -57,17 +58,24 @@ async def send_telegram_message(trade_signal):
             f"🎯 *ATR:* {trade_signal.get('atr', 'N/A')}\n"
             f"📢 *Volume:* {trade_signal.get('volume', 'N/A')}\n"
             f"🛠 *Trade Side:* {trade_signal.get('side', 'N/A')}\n"
+
         )
         await bot.send_message(chat_id=CHAT_ID, text=message, parse_mode=ParseMode.MARKDOWN)
         logger.info(f"✅ Trade signal sent to Telegram: {trade_signal.get('symbol')}")
     except Exception as e:
         logger.error(f"❌ Error sending trade signal to Telegram: {e}")
 
+
+def check_user():
+    pass
+
+
 async def process_message(queue):
     """Continuously process messages from the queue."""
     while True:
         trade_signal = await queue.get()
         await send_telegram_message(trade_signal)
+
 
 async def consume_rabbitmq():
     """Listen for messages from RabbitMQ asynchronously."""
@@ -93,9 +101,14 @@ async def consume_rabbitmq():
     # Start the Telegram message processor
     await process_message(queue)
 
+
 async def main():
-    """Start the RabbitMQ consumer."""
-    await asyncio.gather(consume_rabbitmq())
+    """Start the bot and RabbitMQ consumer concurrently."""
+    await asyncio.gather(
+        consume_rabbitmq(),
+        dp.start_polling(bot)  # Starts the bot polling
+    )
+
 
 if __name__ == "__main__":
     asyncio.run(main())
