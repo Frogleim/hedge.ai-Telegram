@@ -1,7 +1,6 @@
 import logging
 import os
 import asyncio
-import qrcode  # QR code library
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.enums.parse_mode import ParseMode
@@ -117,8 +116,7 @@ async def on_start_trial(callback_query: types.CallbackQuery):
 
     db.change_user_status(user_id, 'trial')
 
-    await callback_query.message.edit_text("🎉 You are now on a 7-day free trial for trade signals!\n"
-                                           "t.me/hedge_ai_crypto11_bot.")
+    await callback_query.message.edit_text("🎉 You are now on a 7-day free trial for trade signals! [t.me/hedge_ai_crypto11_bot](https://t.me/hedge_ai_crypto11_bot)", parse_mode="Markdown")
 
 
 # Handle Subscription Button -> Ask for Payment Method
@@ -126,13 +124,14 @@ async def on_start_trial(callback_query: types.CallbackQuery):
 async def choose_payment_method(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
 
+    db = db_utils.DB()
+
+    db.change_user_status(user_id, 'pending')
+
     await callback_query.message.edit_text(
         "💳 Please select a payment method:",
         reply_markup=payment_method_keyboard()
     )
-    db = db_utils.DB()
-
-    db.change_user_status(user_id, 'pending')
 
 
 

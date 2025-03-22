@@ -37,9 +37,10 @@ async def start_command(message: types.Message):
 
     db = db_utils.DB()
     user_id = message.from_user.id
+    print(message.from_user.id)
     is_allowed = db.check_user(user_id)
     if not is_allowed:
-        await message.answer('You are not allowed to get trading signal. Please subscribe or get 7 days trial.\n @miya_binance_bot')
+        await message.answer('You are not allowed to get trading signal. Please subscribe or get 7 days trial.\n https://t.me/miya_binance_bot', parse_mode='MARKDOWN')
     else:
         await message.answer("👋 Welcome! This bot will send you trade signals. Stay tuned!")
 
@@ -47,6 +48,7 @@ async def start_command(message: types.Message):
 async def send_telegram_message(trade_signal):
     """Send trade signal to Telegram chat."""
     try:
+        # Create the message content
         message = (
             f"📢 *Trade Signal Received!*\n\n"
             f"📍 *Symbol:* {trade_signal.get('symbol', 'N/A')}\n"
@@ -58,10 +60,22 @@ async def send_telegram_message(trade_signal):
             f"🎯 *ATR:* {trade_signal.get('atr', 'N/A')}\n"
             f"📢 *Volume:* {trade_signal.get('volume', 'N/A')}\n"
             f"🛠 *Trade Side:* {trade_signal.get('side', 'N/A')}\n"
-
         )
-        await bot.send_message(chat_id=CHAT_ID, text=message, parse_mode=ParseMode.MARKDOWN)
+
+        # Get all active users from the database
+        db = db_utils.DB()
+        all_users = db.get_all_active_users()  # Make sure this function filters out expired or pending users
+        # Create a list of coroutines for sending messages
+        send_messages = [
+            bot.send_message(chat_id=user.telegram_id, text=message, parse_mode=ParseMode.MARKDOWN)
+            for user in all_users
+        ]
+
+        # Use asyncio.gather to run the send_message tasks concurrently
+        await asyncio.gather(*send_messages)
+
         logger.info(f"✅ Trade signal sent to Telegram: {trade_signal.get('symbol')}")
+
     except Exception as e:
         logger.error(f"❌ Error sending trade signal to Telegram: {e}")
 

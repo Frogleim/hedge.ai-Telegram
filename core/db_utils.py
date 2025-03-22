@@ -66,11 +66,11 @@ class DB:
         session = self._connect_db()
         if session:
             try:
-                user = session.query(User).filter(User.user_id == str(user_id)).first()
+                user = session.query(User).filter(User.telegram_id == str(user_id)).first()
                 if user:
                     user.status = status
                     session.commit()
-                    loggs_handler.system_log.info(f"User status changed to {status} User ID: {user.user_id}")
+                    loggs_handler.system_log.info(f"User status changed to {status} User ID: {user.telegram_id}")
             except Exception as e:
                 loggs_handler.error_logs_logger.error(f'Error while updating user: {e}')
             finally:
@@ -80,11 +80,11 @@ class DB:
         session = self._connect_db()
         if session:
             try:
-                user = session.query(User).filter(User.user_id == str(user_id)).first()
+                user = session.query(User).filter(User.telegram_id == str(user_id)).first()
                 if user:
                     user.payment_type = payment_type
                     session.commit()
-                    loggs_handler.system_log.info(f"User payment type changed to {payment_type} User ID: {user.user_id}")
+                    loggs_handler.system_log.info(f"User payment type changed to {payment_type} User ID: {user.telegram_id}")
             except Exception as e:
                 loggs_handler.error_logs_logger.error(f'Error while updating user payment type: {e}')
             finally:
@@ -130,13 +130,28 @@ class DB:
                     db.change_user_status(telegram_id, new_status)
                     return False
 
-                if user.status == "payed" or user.status == 'trial':
+                if user.status == "paid" or user.status == 'trial':
                     return True
                 else:
                     return False
             except Exception as e:
                 loggs_handler.error_logs_logger.error(f'Error while fetching user: {e}')
                 pass
+
+
+    def get_all_active_users(self):
+
+        """Get Active Users"""
+
+        session = self._connect_db()
+        active_users = []
+
+        if session:
+            users = session.query(User).all()
+            for user in users:
+                if user.status == "payed" or user.status == "trial":
+                    active_users.append(user.telegram_id)
+            return active_users
 
 
 if __name__ == "__main__":
@@ -153,7 +168,7 @@ if __name__ == "__main__":
     }
 
     db = DB()
-    db.add_new_user(user_data)
+    # db.add_new_user(user_data)
     # db.change_user_status(user_data['user_id'], 'inactive')
     # db.add_wallet(wallet_data)
 
@@ -161,3 +176,5 @@ if __name__ == "__main__":
     # crypto_type = "Bitcoin"
     # wallet_address = db.get_wallet_address(crypto_type)
     # print(f"Wallet address for {crypto_type}: {wallet_address}")
+    active_users = db.get_all_active_users()
+    print(active_users)
