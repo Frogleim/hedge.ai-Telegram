@@ -168,13 +168,6 @@ if __name__ == "__main__":
     }
 
     db = DB()
-    # db.add_new_user(user_data)
-    # db.change_user_status(user_data['user_id'], 'inactive')
-    # db.add_wallet(wallet_data)
 
-    # # Test wallet retrieval
-    # crypto_type = "Bitcoin"
-    # wallet_address = db.get_wallet_address(crypto_type)
-    # print(f"Wallet address for {crypto_type}: {wallet_address}")
     active_users = db.get_all_active_users()
     print(active_users)

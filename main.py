@@ -21,7 +21,6 @@ RABBITMQ_USER = os.getenv("RABBITMQ_USER")
 RABBITMQ_PASS = os.getenv("RABBITMQ_PASS")
 QUEUE_NAME = os.getenv("QUEUE_NAME")
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -62,16 +61,13 @@ async def send_telegram_message(trade_signal):
             f"🛠 *Trade Side:* {trade_signal.get('side', 'N/A')}\n"
         )
 
-        # Get all active users from the database
         db = db_utils.DB()
-        all_users = db.get_all_active_users()  # Make sure this function filters out expired or pending users
-        # Create a list of coroutines for sending messages
+        all_users = db.get_all_active_users()
         send_messages = [
-            bot.send_message(chat_id=user.telegram_id, text=message, parse_mode=ParseMode.MARKDOWN)
+            bot.send_message(chat_id=user, text=message, parse_mode=ParseMode.MARKDOWN)
             for user in all_users
         ]
 
-        # Use asyncio.gather to run the send_message tasks concurrently
         await asyncio.gather(*send_messages)
 
         logger.info(f"✅ Trade signal sent to Telegram: {trade_signal.get('symbol')}")
@@ -80,19 +76,21 @@ async def send_telegram_message(trade_signal):
         logger.error(f"❌ Error sending trade signal to Telegram: {e}")
 
 
-def check_user():
-    pass
 
 
 async def process_message(queue):
+
     """Continuously process messages from the queue."""
+
     while True:
         trade_signal = await queue.get()
         await send_telegram_message(trade_signal)
 
 
 async def consume_rabbitmq():
+
     """Listen for messages from RabbitMQ asynchronously."""
+
     connection = await aio_pika.connect_robust(
         f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASS}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/"
     )
@@ -112,7 +110,6 @@ async def consume_rabbitmq():
 
     logger.info("📡 Listening for trade signals from RabbitMQ...")
 
-    # Start the Telegram message processor
     await process_message(queue)
 
 
@@ -120,9 +117,12 @@ async def main():
     """Start the bot and RabbitMQ consumer concurrently."""
     await asyncio.gather(
         consume_rabbitmq(),
-        dp.start_polling(bot)  # Starts the bot polling
+        dp.start_polling(bot)
     )
 
 
 if __name__ == "__main__":
+    from multiprocessing import Process
+
+    Process(target=main).start()
     asyncio.run(main())

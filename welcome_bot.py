@@ -4,26 +4,28 @@ import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.enums.parse_mode import ParseMode
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, FSInputFile
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.client.default import DefaultBotProperties
 from dotenv import load_dotenv
 from core import db_utils
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from core.models import User
 
-# Load environment variables
+
 load_dotenv()
 
-# Telegram Bot Token
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
-# Initialize bot and dispatcher
 bot = Bot(token=TELEGRAM_BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
 dp = Dispatcher()
+DATABASE_URL = os.getenv('DATABASE_URL')
+engine = create_engine(DATABASE_URL)
+Session = sessionmaker(bind=engine)
 
-# Set up logging
 logging.basicConfig(level=logging.INFO)
 
 
-# Inline Keyboards
 def start_trial_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [
@@ -49,18 +51,12 @@ def crypto_selection_keyboard():
     ])
 
 
-from aiogram import types
-from aiogram.filters import Command
-
 
 @dp.message(Command("start"))
 async def start(message: types.Message):
     db = db_utils.DB()
     user_id = message.from_user.id
     username = message.from_user.username
-
-    print(user_id)
-    print(username)
 
     user_data = {
         "telegram_id": user_id,
@@ -100,26 +96,34 @@ async def start(message: types.Message):
 
         await message.answer(
             welcome_text,
-            parse_mode="HTML",  # ✅ Use HTML (No need to escape characters)
+            parse_mode="HTML",
             reply_markup=start_trial_keyboard()
         )
     else:
         await message.answer(
             "Welcome back! For getting signals, please open this Telegram bot: [t.me/hedge_ai_crypto11_bot](https://t.me/hedge_ai_crypto11_bot)",
-            parse_mode="Markdown",  # ✅ Use Markdown for links
+            parse_mode="Markdown",
         )
-# Handle Start Trial Button
+
+
 @dp.callback_query(lambda c: c.data == "start_trial")
 async def on_start_trial(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     db = db_utils.DB()
+    session = Session()
+    user = session.query(User).get(user_id)
+    if user and user.status == 'expired':
+        await callback_query.answer(
+            "⚠️ You have already used your trial. Please subscribe to continue receiving trade signals.\n\n",
+            reply_markup=crypto_selection_keyboard(),
+            parse_mode="Markdown")
+    else:
+        db.change_user_status(user_id, 'trial')
+        await callback_query.message.edit_text("🎉 You are now on a 7-day free trial for trade signals! "
+                                               "[t.me/hedge_ai_crypto11_bot](https://t.me/hedge_ai_crypto11_bot)",
+                                               parse_mode="Markdown")
 
-    db.change_user_status(user_id, 'trial')
 
-    await callback_query.message.edit_text("🎉 You are now on a 7-day free trial for trade signals! [t.me/hedge_ai_crypto11_bot](https://t.me/hedge_ai_crypto11_bot)", parse_mode="Markdown")
-
-
-# Handle Subscription Button -> Ask for Payment Method
 @dp.callback_query(lambda c: c.data == "subscribe")
 async def choose_payment_method(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
@@ -134,8 +138,6 @@ async def choose_payment_method(callback_query: types.CallbackQuery):
     )
 
 
-
-# Handle Payment by Card
 @dp.callback_query(lambda c: c.data == "pay_card")
 async def pay_by_card(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
@@ -147,7 +149,6 @@ async def pay_by_card(callback_query: types.CallbackQuery):
     await callback_query.message.edit_text("✅ Payment successful! You are now subscribed via Card.")
 
 
-# Handle Payment by Crypto -> Ask for Cryptocurrency
 @dp.callback_query(lambda c: c.data == "pay_crypto")
 async def select_crypto(callback_query: types.CallbackQuery):
     await callback_query.message.edit_text(
