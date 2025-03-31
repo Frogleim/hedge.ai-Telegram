@@ -129,3 +129,54 @@
 1.03 beta - 2025-03-22 20:14:27,711 - INFO - ✅ System log initialized.
 1.03 beta - 2025-03-22 20:14:31,251 - INFO - User karensiim has expired
 1.03 beta - 2025-03-22 20:14:32,030 - INFO - User senior_accountant_meri_telunts has expired
+1.03 beta - 2025-03-28 09:58:39,384 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 13:24:44,306 - ERROR - Database error: (psycopg2.DatabaseError) could not receive data from server: Operation timed out
+SSL SYSCALL error: Operation timed out
+
+[SQL: SELECT payments_telegramuser.id AS payments_telegramuser_id, payments_telegramuser.telegram_id AS payments_telegramuser_telegram_id, payments_telegramuser.telegram_username AS payments_telegramuser_telegram_username, payments_telegramuser.status AS payments_telegramuser_status, payments_telegramuser.trial_start AS payments_telegramuser_trial_start, payments_telegramuser.trial_end AS payments_telegramuser_trial_end, payments_telegramuser.expiry_date AS payments_telegramuser_expiry_date, payments_telegramuser.payment_type AS payments_telegramuser_payment_type 
+FROM payments_telegramuser]
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+1.03 beta - 2025-03-28 13:42:12,320 - ERROR - Database error: (psycopg2.DatabaseError) could not receive data from server: Operation timed out
+SSL SYSCALL error: Operation timed out
+
+[SQL: SELECT payments_telegramuser.id AS payments_telegramuser_id, payments_telegramuser.telegram_id AS payments_telegramuser_telegram_id, payments_telegramuser.telegram_username AS payments_telegramuser_telegram_username, payments_telegramuser.status AS payments_telegramuser_status, payments_telegramuser.trial_start AS payments_telegramuser_trial_start, payments_telegramuser.trial_end AS payments_telegramuser_trial_end, payments_telegramuser.expiry_date AS payments_telegramuser_expiry_date, payments_telegramuser.payment_type AS payments_telegramuser_payment_type 
+FROM payments_telegramuser]
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+1.03 beta - 2025-03-28 14:02:15,952 - ERROR - Database error: (psycopg2.DatabaseError) could not receive data from server: Operation timed out
+SSL SYSCALL error: Operation timed out
+
+[SQL: SELECT payments_telegramuser.id AS payments_telegramuser_id, payments_telegramuser.telegram_id AS payments_telegramuser_telegram_id, payments_telegramuser.telegram_username AS payments_telegramuser_telegram_username, payments_telegramuser.status AS payments_telegramuser_status, payments_telegramuser.trial_start AS payments_telegramuser_trial_start, payments_telegramuser.trial_end AS payments_telegramuser_trial_end, payments_telegramuser.expiry_date AS payments_telegramuser_expiry_date, payments_telegramuser.payment_type AS payments_telegramuser_payment_type 
+FROM payments_telegramuser]
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+1.03 beta - 2025-03-28 14:28:54,156 - ERROR - Database error: (psycopg2.DatabaseError) could not receive data from server: Operation timed out
+SSL SYSCALL error: Operation timed out
+
+[SQL: SELECT payments_telegramuser.id AS payments_telegramuser_id, payments_telegramuser.telegram_id AS payments_telegramuser_telegram_id, payments_telegramuser.telegram_username AS payments_telegramuser_telegram_username, payments_telegramuser.status AS payments_telegramuser_status, payments_telegramuser.trial_start AS payments_telegramuser_trial_start, payments_telegramuser.trial_end AS payments_telegramuser_trial_end, payments_telegramuser.expiry_date AS payments_telegramuser_expiry_date, payments_telegramuser.payment_type AS payments_telegramuser_payment_type 
+FROM payments_telegramuser]
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+1.03 beta - 2025-03-28 15:53:32,345 - ERROR - Database error: (psycopg2.DatabaseError) could not receive data from server: Operation timed out
+SSL SYSCALL error: Operation timed out
+
+[SQL: SELECT payments_telegramuser.id AS payments_telegramuser_id, payments_telegramuser.telegram_id AS payments_telegramuser_telegram_id, payments_telegramuser.telegram_username AS payments_telegramuser_telegram_username, payments_telegramuser.status AS payments_telegramuser_status, payments_telegramuser.trial_start AS payments_telegramuser_trial_start, payments_telegramuser.trial_end AS payments_telegramuser_trial_end, payments_telegramuser.expiry_date AS payments_telegramuser_expiry_date, payments_telegramuser.payment_type AS payments_telegramuser_payment_type 
+FROM payments_telegramuser]
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+1.03 beta - 2025-03-28 15:58:59,997 - ERROR - Database error: (psycopg2.DatabaseError) could not receive data from server: Operation timed out
+SSL SYSCALL error: Operation timed out
+
+[SQL: SELECT payments_telegramuser.id AS payments_telegramuser_id, payments_telegramuser.telegram_id AS payments_telegramuser_telegram_id, payments_telegramuser.telegram_username AS payments_telegramuser_telegram_username, payments_telegramuser.status AS payments_telegramuser_status, payments_telegramuser.trial_start AS payments_telegramuser_trial_start, payments_telegramuser.trial_end AS payments_telegramuser_trial_end, payments_telegramuser.expiry_date AS payments_telegramuser_expiry_date, payments_telegramuser.payment_type AS payments_telegramuser_payment_type 
+FROM payments_telegramuser]
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+1.03 beta - 2025-03-28 18:15:37,626 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:15:51,711 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:16:05,278 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:16:55,033 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:17:16,162 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:17:20,876 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:17:20,880 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:17:20,880 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-28 18:17:25,754 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-31 10:04:57,552 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-31 10:06:22,978 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-31 10:16:19,416 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-31 10:18:57,271 - INFO - ✅ System log initialized.
+1.03 beta - 2025-03-31 10:20:44,200 - INFO - ✅ System log initialized.

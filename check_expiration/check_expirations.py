@@ -2,10 +2,10 @@ import os
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import User  # Assuming this is where your SQLAlchemy model is defined
+from models import User  # Assuming this is where your SQLAlchemy model is defined
 from dotenv import load_dotenv
 from aiogram import Bot
-from . import loggs_handler
+import loggs_handler
 import asyncio
 
 load_dotenv()

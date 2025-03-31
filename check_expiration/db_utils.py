@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import User, Wallets
-from . import loggs_handler
+from models import User, Wallets
+import loggs_handler
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os

@@ -1,0 +1,6 @@
+aiogram
+sqlalchemy
+aio-pika
+python-dotenv
+psycopg2-binary
+psycopg2

@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  welcome_bot:
+    build:
+      context: .
+    container_name: welcome_bot
+    env_file:
+      - .env
+    restart: always
+    depends_on: []
+    volumes:
+      - .:/app
+
+  signal_bot:
+    build:
+      context: ./signals_bot/
+    container_name: signal_bot
+    env_file:
+      - signals_bot/.env
+    restart: always
+    depends_on: []
+    volumes:
+      - ./signals_bot:/app/signals_bot
+
+  check_expiration:
+    build:
+      context: ./check_expiration/
+    container_name: check_expiration
+    env_file:
+      - check_expiration/.env
+    restart: always
+    depends_on: []
+    volumes:
+      - ./check_expiration:/app/check_expiration

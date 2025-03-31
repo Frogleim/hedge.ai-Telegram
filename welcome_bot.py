@@ -30,7 +30,7 @@ def start_trial_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="Start Trial", callback_data="start_trial"),
-            InlineKeyboardButton(text="Subscribe", callback_data="subscribe")
+            # InlineKeyboardButton(text="Subscribe", callback_data="subscribe")
         ]
     ])
 
@@ -68,9 +68,9 @@ async def start(message: types.Message):
     is_not_exist = db.add_new_user(user_data)
     if is_not_exist:
         welcome_text = """
-        🎉 <b>Welcome to the Hedge.ai!</b> 🚀
+        🎉 <b>Welcome to the Virtuum Lab!</b> 🚀
 
-        Welcome to the ultimate <b>Trading Signals</b> bot designed to help you make smarter trading decisions with ease! Whether you're a beginner or an experienced trader, our service provides you with <b>real-time, reliable trade signals</b> to enhance your trading strategies.
+        Welcome to the ultimate <b>Virtuum Lab's Trading Signals</b> bot designed to help you make smarter trading decisions with ease! Whether you're a beginner or an experienced trader, our service provides you with <b>real-time, reliable trade signals</b> to enhance your trading strategies.
 
         ---
 
