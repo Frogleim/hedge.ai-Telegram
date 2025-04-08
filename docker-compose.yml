@@ -1,16 +1,7 @@
 version: '3.7'
 
 services:
-  welcome_bot:
-    build:
-      context: .
-    container_name: welcome_bot
-    env_file:
-      - .env
-    restart: always
-    depends_on: []
-    volumes:
-      - .:/app
+
 
   signal_bot:
     build:

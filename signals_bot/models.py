@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, func, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.dialects.postgresql import ENUM  # Use PostgreSQL specific ENUM type
 
@@ -33,17 +33,23 @@ class PaymentTypeEnum(Enum):
 
 
 
+
 class User(Base):
-    """User table for managing subscriptions"""
-    __tablename__ = "payments_telegramuser"
-    id = Column(Integer, primary_key=True)
-    telegram_id = Column(String, nullable=False)
-    telegram_username = Column(String, default="trial")  # trial, active, expired
-    status = Column(String, nullable=False)
-    trial_start = Column(DateTime, nullable=True)
-    trial_end = Column(DateTime, nullable=True)  # Defaults to now, modify after trial
-    expiry_date = Column(DateTime, nullable=True)  # For paid subscription expiry
-    payment_type = Column(String, default=None,  nullable=True)
+    __tablename__ = 'accounts_telegramuser'  # Matches Django's default table name
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_username = Column(String(255), unique=True, nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
+
+    trial = Column(Boolean, default=False, nullable=False)
+    paid = Column(Boolean, default=False, nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
+    is_staff = Column(Boolean, default=False, nullable=False)
+
+    def __repr__(self):
+        return f"<TelegramUser {self.telegram_username}>"
+
+
 
 class Wallets(Base):
     __tablename__ = "wallets"
