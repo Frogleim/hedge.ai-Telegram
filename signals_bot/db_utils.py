@@ -26,7 +26,19 @@ class DB:
             loggs_handler.error_logs_logger.error(f'Error while connecting to db: {e}')
             return None
 
-
+    def update_user_data(self, username, data):
+        session = self._connect_db()
+        if session:
+            try:
+                user = session.query(User).filter(User.telegram_username == str(username)).first()
+                if user:
+                    user.telegram_id = data
+                    session.commit()
+                    loggs_handler.system_log.info(f"User data updated. User ID: {user.telegram_username}")
+            except Exception as e:
+                loggs_handler.error_logs_logger.error(f'Error while updating user: {e}')
+            finally:
+                session.close()
 
     def change_user_status(self, username, status):
         session = self._connect_db()
@@ -89,9 +101,9 @@ class DB:
         if session:
             try:
                 user = session.query(User).filter(User.telegram_username == str(username)).first()
-                if not user.trial or  not user.paid:
-                    new_status = "expired"
-                    db.change_user_status(username, new_status)
+                print(user.trial)
+                print(user.paid)
+                if not (user.trial or user.paid):
                     return False
                 else:
                     return True
@@ -108,12 +120,12 @@ class DB:
 
         session = self._connect_db()
         active_users = []
-
         if session:
             users = session.query(User).all()
             for user in users:
                 if user.paid or user.trial:
-                    active_users.append(user.telegram_username)
+                    active_users.append(user.telegram_id)
+                    print(active_users)
             return active_users
 
 

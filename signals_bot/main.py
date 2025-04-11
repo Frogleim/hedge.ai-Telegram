@@ -34,11 +34,13 @@ async def start_command(message: types.Message):
     """Handle the /start command."""
 
     db = db_utils.DB()
-    user_id = message.from_user.id
-    print(message.from_user.id)
-    is_allowed = db.check_user(user_id)
+    username = message.from_user.username
+    telegram_id = message.from_user.id
+    print(telegram_id)
+    db.update_user_data(username, telegram_id)
+    is_allowed = db.check_user(username)
     if not is_allowed:
-        await message.answer('You are not allowed to get trading signal. Please subscribe or get 7 days trial.\n https://t.me/miya_binance_bot', parse_mode='MARKDOWN')
+        await message.answer('You are not allowed to get trading signal. Please subscribe or get 7 days trial.\n https://virtuum.xyz', parse_mode='MARKDOWN')
     else:
         await message.answer("👋 Welcome! This bot will send you trade signals. Stay tuned!")
 

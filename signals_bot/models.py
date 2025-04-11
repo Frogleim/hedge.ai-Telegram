@@ -38,6 +38,7 @@ class User(Base):
     __tablename__ = 'accounts_telegramuser'  # Matches Django's default table name
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    telegram_id = Column(String(255), unique=True, nullable=True)
     telegram_username = Column(String(255), unique=True, nullable=False)
     email = Column(String(255), unique=True, nullable=False)
 

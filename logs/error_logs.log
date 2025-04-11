@@ -165,3 +165,30 @@ DETAIL:  Failing row contains (1, 1234, frogleim, 2025-03-19 16:44:16.528045+00,
 1.03 beta - 2025-04-08 14:56:33,678 - ERROR - ❌ Example error log.
 1.03 beta - 2025-04-08 14:56:57,520 - ERROR - ❌ Example error log.
 1.03 beta - 2025-04-08 15:01:00,956 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:23:45,216 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:23:54,599 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:23:59,465 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:24:59,708 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:25:03,658 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:26:32,115 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:26:35,999 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:27:28,472 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-09 09:27:38,924 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:30:25,587 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:30:29,497 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:30:37,986 - ERROR - Error while updating user: 'int' object is not subscriptable
+1.03 beta - 2025-04-11 10:33:18,138 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:33:22,169 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:33:27,637 - ERROR - Error while updating user: 'int' object is not subscriptable
+1.03 beta - 2025-04-11 10:34:47,258 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:34:51,164 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:35:03,954 - ERROR - Error while updating user: 'int' object is not subscriptable
+1.03 beta - 2025-04-11 10:36:59,555 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:37:03,465 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:37:52,300 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:37:57,048 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:38:01,129 - ERROR - Error while updating user: 'int' object is not subscriptable
+1.03 beta - 2025-04-11 10:38:29,190 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:38:33,149 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:39:31,307 - ERROR - ❌ Example error log.
+1.03 beta - 2025-04-11 10:39:35,436 - ERROR - ❌ Example error log.
