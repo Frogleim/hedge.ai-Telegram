@@ -10,12 +10,6 @@ from sqlalchemy import Enum
 # Load environment variables
 load_dotenv(dotenv_path=os.path.abspath('.env'))
 
-# Database credentials
-DB_USER = os.getenv("DB_USER", "postgres")
-DB_PASS = os.getenv("DB_PASS", "admin")
-DB_HOST = os.getenv("DB_HOST", "localhost")  # For Docker container
-DB_PORT = os.getenv("DB_PORT", "5433")
-DB_NAME = os.getenv("DB_NAME", "hedge.ai")
 
 # Create the database URL
 DATABASE_URL='postgresql://virtuum_owner:npg_A2rhO4MTipyW@ep-ancient-dew-a5zf8onm-pooler.us-east-2.aws.neon.tech/virtuum?sslmode=require'
